@@ -1,29 +1,65 @@
-## Description
+---
+name: "📦 Pull Request"
+about: Submit changes for review
+title: "PR: [Brief Description]"
+labels: ""
+assignees: ""
+---
 
-<!-- Please include a summary of the change and which issue is fixed. Please also include relevant motivation and context. List any dependencies that are required for this change. -->
+## 📌 Linked Issue
 
-## Related Issue
+<!-- Link to the issue this PR addresses (e.g. "Closes #123" or "Related to #456") -->
 
-Fixes #
+- [ ] Connected to #issue_number
 
-## Type of Change
+---
 
-- [ ] Bug Fix
-- [ ] New Feature
-- [ ] Documentation
-- [ ] Refactor
+## 🛠 Changes Made
 
-## Screenshots (if applicable)
+<!-- Bullet-point summary of your changes -->
 
-Please provide screenshots or screen recordings to demonstrate the visual changes or new features.
+- Added: [Description]
+- Fixed: [Description]
+- Updated: [Description]
 
-| Before                              | After                              |
-| ----------------------------------- | ---------------------------------- |
-| <!-- Add before screenshot here --> | <!-- Add after screenshot here --> |
+---
 
-## Checklist
+## 🧪 Testing
 
-- [ ] Code follows project style
-- [ ] Build passes
-- [ ] No console errors
-- [ ] Documentation updated
+<!-- How did you verify your changes? -->
+
+- [ ] Ran unit tests (`npm test`)
+- [ ] Tested manually (describe below):
+  - Test case 1: [Steps + Expected Result]
+  - Test case 2: [Steps + Expected Result]
+
+---
+
+## 📸 UI Changes (if applicable)
+
+<!-- Before/after screenshots or GIFs -->
+
+| Before  | After   |
+| ------- | ------- |
+| [Image] | [Image] |
+
+---
+
+## 📝 Documentation Updates
+
+- [ ] Updated README/docs
+- [ ] Added code comments
+
+---
+
+## ✅ Checklist
+
+- [ ] Created a new branch for PR
+- [ ] Have stared the repository
+- [ ] Follows [JavaScript Styleguide](CONTRIBUTING.md#javascript-styleguide)
+- [ ] No console warnings/errors
+- [ ] Commit messages follow [Git Guidelines](CONTRIBUTING.md#git-commit-messages)
+
+## 💡 Additional Notes (If any)
+
+<!-- Optional: Deployment needs, breaking changes, etc. -->
