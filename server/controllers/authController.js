@@ -2,7 +2,10 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
 const sendEmail = require("../utils/sendEmail");
-const { getOtpEmailTemplate, getPasswordResetTemplate } = require("../utils/emailTemplates");
+const {
+  getOtpEmailTemplate,
+  getPasswordResetTemplate,
+} = require("../utils/emailTemplates");
 
 // Register a new user
 exports.register = async (req, res, next) => {
@@ -43,7 +46,11 @@ exports.register = async (req, res, next) => {
         email: user.email,
         subject: "Verify Your Email - PackGo",
         message: `Welcome to PackGo! Your 6-digit verification code is: ${otp}\n\nThis code will expire in 5 minutes.`,
-        html: getOtpEmailTemplate(user.name, otp, "Welcome to PackGo! Your one time verification code is:"),
+        html: getOtpEmailTemplate(
+          user.name,
+          otp,
+          "Welcome to PackGo! Your one time verification code is:",
+        ),
       });
     } catch (emailErr) {
       console.error("Failed to send registration email:", emailErr);
@@ -94,7 +101,10 @@ exports.login = async (req, res, next) => {
       const now = Date.now();
 
       // Check if blocked (24-hour lockout)
-      if (user.otpBlockedUntil && new Date(user.otpBlockedUntil).getTime() > now) {
+      if (
+        user.otpBlockedUntil &&
+        new Date(user.otpBlockedUntil).getTime() > now
+      ) {
         const timeLeft = new Date(user.otpBlockedUntil).getTime() - now;
         const hoursLeft = Math.ceil(timeLeft / (1000 * 60 * 60));
         return res.status(401).json({
@@ -137,18 +147,29 @@ exports.login = async (req, res, next) => {
             email: user.email,
             subject: "Verify Your Email - PackGo",
             message: `Your 6-digit verification code is: ${otp}\n\nThis code will expire in 5 minutes.`,
-            html: getOtpEmailTemplate(user.name, otp, "Your one time verification code is:"),
+            html: getOtpEmailTemplate(
+              user.name,
+              otp,
+              "Your one time verification code is:",
+            ),
           });
         } catch (emailErr) {
-          console.error("Failed to send verification email on login:", emailErr);
+          console.error(
+            "Failed to send verification email on login:",
+            emailErr,
+          );
         }
 
         if (process.env.NODE_ENV === "development" || !process.env.SMTP_HOST) {
-          console.log("\n=======================================================");
+          console.log(
+            "\n=======================================================",
+          );
           console.log("🚀 DEV MODE: EMAIL VERIFICATION OTP GENERATED");
           console.log(`Email: ${user.email}`);
           console.log(`OTP Code: ${otp}`);
-          console.log("=======================================================\n");
+          console.log(
+            "=======================================================\n",
+          );
         }
 
         return res.status(401).json({
@@ -342,7 +363,9 @@ exports.verifyOtp = async (req, res, next) => {
     const { email, otp } = req.body;
 
     if (!email || !otp) {
-      return res.status(400).json({ msg: "Please provide email and verification code" });
+      return res
+        .status(400)
+        .json({ msg: "Please provide email and verification code" });
     }
 
     const user = await User.findOne({ email });
@@ -363,18 +386,26 @@ exports.verifyOtp = async (req, res, next) => {
             token,
             user: { id: user.id, name: user.name, email: user.email },
           });
-        }
+        },
       );
     }
 
     // Check if OTP matches
     if (user.otp !== otp) {
-      return res.status(400).json({ msg: "Invalid verification code. Please check and try again." });
+      return res
+        .status(400)
+        .json({
+          msg: "Invalid verification code. Please check and try again.",
+        });
     }
 
     // Check if OTP is expired
     if (new Date(user.otpExpire).getTime() < Date.now()) {
-      return res.status(400).json({ msg: "Verification code has expired. Please request a new one." });
+      return res
+        .status(400)
+        .json({
+          msg: "Verification code has expired. Please request a new one.",
+        });
     }
 
     // Successful verification
@@ -399,7 +430,7 @@ exports.verifyOtp = async (req, res, next) => {
           token,
           user: { id: user.id, name: user.name, email: user.email },
         });
-      }
+      },
     );
   } catch (err) {
     next(err);
@@ -427,21 +458,29 @@ exports.resendOtp = async (req, res, next) => {
     const now = Date.now();
 
     // Check if locked out (24-hour block)
-    if (user.otpBlockedUntil && new Date(user.otpBlockedUntil).getTime() > now) {
+    if (
+      user.otpBlockedUntil &&
+      new Date(user.otpBlockedUntil).getTime() > now
+    ) {
       const timeLeft = new Date(user.otpBlockedUntil).getTime() - now;
       const hoursLeft = Math.ceil(timeLeft / (1000 * 60 * 60));
       return res.status(429).json({
         msg: `Too many resend attempts. You are blocked from requesting new codes. Please try again in ${hoursLeft} hours.`,
         blocked: true,
-        blockedUntil: user.otpBlockedUntil
+        blockedUntil: user.otpBlockedUntil,
       });
     }
 
     // Enforce cooldown (60 seconds)
-    if (user.otpLastResent && now - new Date(user.otpLastResent).getTime() < 60000) {
-      const timeLeftSeconds = Math.ceil((60000 - (now - new Date(user.otpLastResent).getTime())) / 1000);
+    if (
+      user.otpLastResent &&
+      now - new Date(user.otpLastResent).getTime() < 60000
+    ) {
+      const timeLeftSeconds = Math.ceil(
+        (60000 - (now - new Date(user.otpLastResent).getTime())) / 1000,
+      );
       return res.status(400).json({
-        msg: `Please wait ${timeLeftSeconds} seconds before requesting another code.`
+        msg: `Please wait ${timeLeftSeconds} seconds before requesting another code.`,
       });
     }
 
@@ -454,13 +493,13 @@ exports.resendOtp = async (req, res, next) => {
       return res.status(429).json({
         msg: "You have reached the maximum number of resend attempts (5). You are blocked from requesting new codes for 24 hours.",
         blocked: true,
-        blockedUntil: blockedTime
+        blockedUntil: blockedTime,
       });
     }
 
     // Generate new OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    
+
     // Save to user
     user.otp = otp;
     user.otpExpire = new Date(now + 5 * 60 * 1000); // 5 minutes
@@ -474,7 +513,11 @@ exports.resendOtp = async (req, res, next) => {
         email: user.email,
         subject: "Verify Your Email - PackGo",
         message: `Your new 6-digit verification code is: ${otp}\n\nThis code will expire in 5 minutes.`,
-        html: getOtpEmailTemplate(user.name, otp, "Your new one time verification code is:"),
+        html: getOtpEmailTemplate(
+          user.name,
+          otp,
+          "Your new one time verification code is:",
+        ),
       });
     } catch (emailErr) {
       console.error("Failed to send new verification email:", emailErr);
@@ -516,7 +559,7 @@ exports.getOtpStatus = async (req, res, next) => {
     }
 
     const now = Date.now();
-    
+
     // 1. Calculate time left for current OTP expiration
     let timeLeft = 0;
     if (user.otp && user.otpExpire) {
@@ -552,7 +595,7 @@ exports.getOtpStatus = async (req, res, next) => {
       resendCooldown,
       isBlocked,
       blockedUntil: user.otpBlockedUntil,
-      hoursLeft
+      hoursLeft,
     });
   } catch (err) {
     next(err);
@@ -565,7 +608,9 @@ exports.requestEmailChange = async (req, res, next) => {
     const { email } = req.body;
 
     if (!email) {
-      return res.status(400).json({ msg: "Please provide the new email address." });
+      return res
+        .status(400)
+        .json({ msg: "Please provide the new email address." });
     }
 
     // Check if same as current email
@@ -575,25 +620,32 @@ exports.requestEmailChange = async (req, res, next) => {
     }
 
     if (currentUser.email.toLowerCase() === email.toLowerCase()) {
-      return res.status(400).json({ msg: "This is already your current email address." });
+      return res
+        .status(400)
+        .json({ msg: "This is already your current email address." });
     }
 
     // Check if new email is taken by another account
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ msg: "Email is already taken by another account." });
+      return res
+        .status(400)
+        .json({ msg: "Email is already taken by another account." });
     }
 
     const now = Date.now();
 
     // Check 24-hour lockout
-    if (currentUser.otpBlockedUntil && new Date(currentUser.otpBlockedUntil).getTime() > now) {
+    if (
+      currentUser.otpBlockedUntil &&
+      new Date(currentUser.otpBlockedUntil).getTime() > now
+    ) {
       const timeLeft = new Date(currentUser.otpBlockedUntil).getTime() - now;
       const hoursLeft = Math.ceil(timeLeft / (1000 * 60 * 60));
       return res.status(429).json({
         msg: `Too many attempts. You are blocked from requesting codes. Please try again in ${hoursLeft} hours.`,
         blocked: true,
-        blockedUntil: currentUser.otpBlockedUntil
+        blockedUntil: currentUser.otpBlockedUntil,
       });
     }
 
@@ -604,7 +656,7 @@ exports.requestEmailChange = async (req, res, next) => {
         const cooldownLeft = Math.ceil((60000 - (now - lastResentTime)) / 1000);
         return res.status(429).json({
           msg: `Please wait ${cooldownLeft} seconds before requesting a new code.`,
-          cooldownLeft
+          cooldownLeft,
         });
       }
     }
@@ -619,13 +671,13 @@ exports.requestEmailChange = async (req, res, next) => {
       return res.status(429).json({
         msg: "You have reached the maximum number of attempts (5). You are blocked from requesting new codes for 24 hours.",
         blocked: true,
-        blockedUntil: blockedTime
+        blockedUntil: blockedTime,
       });
     }
 
     // Generate new OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    
+
     currentUser.otp = otp;
     currentUser.otpExpire = new Date(now + 5 * 60 * 1000); // 5 minutes
     currentUser.otpResendAttempts = newAttempts;
@@ -639,10 +691,17 @@ exports.requestEmailChange = async (req, res, next) => {
         email,
         subject: "Verify Your New Email - PackGo",
         message: `Your 6-digit verification code to update your email to ${email} is: ${otp}\n\nThis code will expire in 5 minutes.`,
-        html: getOtpEmailTemplate(currentUser.name, otp, `Your 6-digit verification code to update your email to <strong>${email}</strong> is:`),
+        html: getOtpEmailTemplate(
+          currentUser.name,
+          otp,
+          `Your 6-digit verification code to update your email to <strong>${email}</strong> is:`,
+        ),
       });
     } catch (emailErr) {
-      console.error("Failed to send email change verification email:", emailErr);
+      console.error(
+        "Failed to send email change verification email:",
+        emailErr,
+      );
     }
 
     if (process.env.NODE_ENV === "development" || !process.env.SMTP_HOST) {
@@ -680,26 +739,43 @@ exports.verifyEmailChange = async (req, res, next) => {
       user.otpLastResent = null;
       user.otpBlockedUntil = null;
       await user.save();
-      return res.json({ success: true, msg: "Email change request discarded successfully." });
+      return res.json({
+        success: true,
+        msg: "Email change request discarded successfully.",
+      });
     }
 
     if (!otpCode) {
-      return res.status(400).json({ msg: "Please enter the verification code." });
+      return res
+        .status(400)
+        .json({ msg: "Please enter the verification code." });
     }
 
     if (!user.tempEmail) {
-      return res.status(400).json({ msg: "No active email change request found." });
+      return res
+        .status(400)
+        .json({ msg: "No active email change request found." });
     }
 
     // Check expiration
     const now = Date.now();
-    if (!user.otp || !user.otpExpire || new Date(user.otpExpire).getTime() < now) {
-      return res.status(400).json({ msg: "Verification code has expired. Please request a new one." });
+    if (
+      !user.otp ||
+      !user.otpExpire ||
+      new Date(user.otpExpire).getTime() < now
+    ) {
+      return res
+        .status(400)
+        .json({
+          msg: "Verification code has expired. Please request a new one.",
+        });
     }
 
     // Check value
     if (user.otp !== otpCode) {
-      return res.status(400).json({ msg: "Invalid verification code. Please try again." });
+      return res
+        .status(400)
+        .json({ msg: "Invalid verification code. Please try again." });
     }
 
     // Success! Update email
@@ -719,8 +795,8 @@ exports.verifyEmailChange = async (req, res, next) => {
         id: user._id,
         name: user.name,
         email: user.email,
-        isVerified: user.isVerified
-      }
+        isVerified: user.isVerified,
+      },
     });
   } catch (err) {
     next(err);
@@ -743,7 +819,8 @@ exports.getEmailChangeStatus = async (req, res, next) => {
     let resendCooldown = 0;
     if (user.otpLastResent) {
       const lastResentTime = new Date(user.otpLastResent).getTime();
-      if (now - lastResentTime < 60000) resendCooldown = Math.ceil((60000 - (now - lastResentTime)) / 1000);
+      if (now - lastResentTime < 60000)
+        resendCooldown = Math.ceil((60000 - (now - lastResentTime)) / 1000);
     }
 
     let isBlocked = false;
@@ -762,7 +839,7 @@ exports.getEmailChangeStatus = async (req, res, next) => {
       resendCooldown,
       isBlocked,
       blockedUntil: user.otpBlockedUntil,
-      hoursLeft
+      hoursLeft,
     });
   } catch (err) {
     next(err);

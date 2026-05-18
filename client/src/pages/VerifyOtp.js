@@ -65,7 +65,7 @@ const VerifyOtp = () => {
     const fetchOtpStatus = async () => {
       try {
         const res = await api.post("/auth/otp-status", { email });
-        
+
         // If user is already verified, redirect them directly to dashboard
         if (res.data.isVerified) {
           navigate("/dashboard");
@@ -258,7 +258,9 @@ const VerifyOtp = () => {
   // Resend Handler
   const handleResend = async () => {
     if (isBlocked) {
-      toast.error(`You are locked out due to too many attempts. Please try again in ${hoursLeft} hours.`);
+      toast.error(
+        `You are locked out due to too many attempts. Please try again in ${hoursLeft} hours.`,
+      );
       return;
     }
     if (resendCooldown > 0) return;
@@ -267,10 +269,10 @@ const VerifyOtp = () => {
     try {
       const res = await api.post("/auth/resend-otp", { email });
       toast.success(res.data.msg || "Verification code resent successfully!");
-      
+
       // Start cooldown timer (60 seconds)
       setResendCooldown(60);
-      
+
       // Reset OTP inputs and expiry timer
       setOtp(["", "", "", "", "", ""]);
       setTimeLeft(300);
@@ -321,7 +323,8 @@ const VerifyOtp = () => {
               right: 0,
               bottom: 0,
               left: 0,
-              background: "linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.2) 100%)",
+              background:
+                "linear-gradient(to top, rgba(0, 0, 0, 0.75) 0%, rgba(0, 0, 0, 0.2) 100%)",
               backdropFilter: "blur(1px)",
             }}
           />
@@ -337,8 +340,12 @@ const VerifyOtp = () => {
             <Typography variant="h3" sx={{ fontWeight: 700, mb: 1.5 }}>
               Almost there!
             </Typography>
-            <Typography variant="h6" sx={{ fontWeight: 400, mb: 4, opacity: 0.9, maxWidth: "85%" }}>
-              We've sent a 6-digit code to your email <strong style={{ textDecoration: "underline" }}>{email}</strong>
+            <Typography
+              variant="h6"
+              sx={{ fontWeight: 400, mb: 4, opacity: 0.9, maxWidth: "85%" }}
+            >
+              We've sent a 6-digit code to your email{" "}
+              <strong style={{ textDecoration: "underline" }}>{email}</strong>
             </Typography>
 
             {/* Custom Pagination Indicator Dots */}
@@ -421,7 +428,9 @@ const VerifyOtp = () => {
                 position: "relative",
               }}
             >
-              <EmailOutlinedIcon sx={{ fontSize: 32, color: theme.palette.primary.main }} />
+              <EmailOutlinedIcon
+                sx={{ fontSize: 32, color: theme.palette.primary.main }}
+              />
               {/* Shield Icon Overlay */}
               <Box
                 sx={{
@@ -438,26 +447,40 @@ const VerifyOtp = () => {
                   boxShadow: "0px 2px 5px rgba(0, 0, 0, 0.15)",
                 }}
               >
-                <ShieldOutlinedIcon sx={{ fontSize: 13, color: theme.palette.primary.main, fontWeight: "bold" }} />
+                <ShieldOutlinedIcon
+                  sx={{
+                    fontSize: 13,
+                    color: theme.palette.primary.main,
+                    fontWeight: "bold",
+                  }}
+                />
               </Box>
             </Box>
 
             {/* Typography Header */}
-            <Typography variant="h5" sx={{ fontWeight: 800, mb: 1, color: "#1a202c" }}>
+            <Typography
+              variant="h5"
+              sx={{ fontWeight: 800, mb: 1, color: "#1a202c" }}
+            >
               Verify Your Email
             </Typography>
 
             {/* Subtitle */}
             <Typography variant="body2" sx={{ color: "#718096", mb: 4, px: 2 }}>
               Enter the 6-digit code sent to{" "}
-              <span style={{ color: theme.palette.primary.main, fontWeight: 700 }}>
+              <span
+                style={{ color: theme.palette.primary.main, fontWeight: 700 }}
+              >
                 {email}
               </span>
             </Typography>
 
             {/* Inline Alert Messages */}
             {errorMsg && (
-              <Alert severity="error" sx={{ mb: 3, borderRadius: 2, textAlign: "left" }}>
+              <Alert
+                severity="error"
+                sx={{ mb: 3, borderRadius: 2, textAlign: "left" }}
+              >
                 {errorMsg}
               </Alert>
             )}
@@ -465,7 +488,14 @@ const VerifyOtp = () => {
             {/* OTP Form */}
             <form onSubmit={handleSubmit}>
               {/* OTP Squares Input Grid */}
-              <Box sx={{ display: "flex", justifyContent: "space-between", gap: 1, mb: 4 }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  gap: 1,
+                  mb: 4,
+                }}
+              >
                 {otp.map((digit, idx) => (
                   <Box
                     key={idx}
@@ -507,23 +537,44 @@ const VerifyOtp = () => {
               </Box>
 
               {/* Expiry Timer */}
-              <Box sx={{ mb: 3, display: "flex", justifyContent: "center", alignItems: "center", minHeight: "20px" }}>
+              <Box
+                sx={{
+                  mb: 3,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  minHeight: "20px",
+                }}
+              >
                 {isLoadingOtpStatus ? (
                   <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                    <CircularProgress size={14} thickness={5} sx={{ color: theme.palette.primary.main }} />
-                    <Typography variant="body2" sx={{ color: "#718096", fontSize: "0.85rem" }}>
+                    <CircularProgress
+                      size={14}
+                      thickness={5}
+                      sx={{ color: theme.palette.primary.main }}
+                    />
+                    <Typography
+                      variant="body2"
+                      sx={{ color: "#718096", fontSize: "0.85rem" }}
+                    >
                       Syncing session...
                     </Typography>
                   </Box>
                 ) : isTimerActive ? (
-                  <Typography variant="body2" sx={{ color: "#718096", display: "inline-flex", gap: 0.5 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "#718096", display: "inline-flex", gap: 0.5 }}
+                  >
                     Code expires in{" "}
                     <strong style={{ color: theme.palette.primary.main }}>
                       {formatTime(timeLeft)}
                     </strong>
                   </Typography>
                 ) : (
-                  <Typography variant="body2" sx={{ color: "error.main", fontWeight: 600 }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "error.main", fontWeight: 600 }}
+                  >
                     Code has expired.
                   </Typography>
                 )}
@@ -532,19 +583,42 @@ const VerifyOtp = () => {
               {/* Resend Link and Warnings */}
               <Box sx={{ mb: 4 }}>
                 {isBlocked ? (
-                  <Box sx={{ p: 2, bgcolor: "error.light", borderRadius: 3, opacity: 0.9 }}>
-                    <Typography variant="caption" sx={{ color: "error.dark", fontWeight: 600, display: "block" }}>
+                  <Box
+                    sx={{
+                      p: 2,
+                      bgcolor: "error.light",
+                      borderRadius: 3,
+                      opacity: 0.9,
+                    }}
+                  >
+                    <Typography
+                      variant="caption"
+                      sx={{
+                        color: "error.dark",
+                        fontWeight: 600,
+                        display: "block",
+                      }}
+                    >
                       ⚠️ Too many resend attempts.
                     </Typography>
-                    <Typography variant="caption" sx={{ color: "error.dark", display: "block", mt: 0.5 }}>
-                      You are blocked from requesting codes. Please retry in {hoursLeft} hours.
+                    <Typography
+                      variant="caption"
+                      sx={{ color: "error.dark", display: "block", mt: 0.5 }}
+                    >
+                      You are blocked from requesting codes. Please retry in{" "}
+                      {hoursLeft} hours.
                     </Typography>
                   </Box>
                 ) : (
                   <Typography variant="body2" sx={{ color: "#718096" }}>
                     Didn't receive the code?{" "}
                     {resendCooldown > 0 ? (
-                      <span style={{ color: theme.palette.primary.main, fontWeight: 600 }}>
+                      <span
+                        style={{
+                          color: theme.palette.primary.main,
+                          fontWeight: 600,
+                        }}
+                      >
                         Resend Code ({resendCooldown}s)
                       </span>
                     ) : (
@@ -571,7 +645,13 @@ const VerifyOtp = () => {
               </Box>
 
               {/* Navigation Action Buttons */}
-              <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
                 {/* Back Button */}
                 <Button
                   onClick={() => navigate(-1)}

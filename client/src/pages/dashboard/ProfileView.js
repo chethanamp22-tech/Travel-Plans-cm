@@ -234,12 +234,17 @@ const ProfileView = () => {
 
         await syncEmailChangeTimers();
 
-        toast.success(res.data.msg || "Verification code sent to your new email.");
+        toast.success(
+          res.data.msg || "Verification code sent to your new email.",
+        );
       } else {
         // Simple name change update
         await api.put("/auth/profile", { name: profileForm.name });
         dispatch(loadUser());
-        setProfileMsg({ type: "success", text: "Profile updated successfully!" });
+        setProfileMsg({
+          type: "success",
+          text: "Profile updated successfully!",
+        });
       }
     } catch (err) {
       const msg = err.response?.data?.msg || "Failed to update profile";
@@ -273,7 +278,9 @@ const ProfileView = () => {
     }
 
     if (timeLeft <= 0) {
-      setOtpErrorMsg("Verification code has expired. Please request a new one.");
+      setOtpErrorMsg(
+        "Verification code has expired. Please request a new one.",
+      );
       return;
     }
 
@@ -291,7 +298,9 @@ const ProfileView = () => {
       setNewEmailPending(null);
       setIsOtpDialogOpen(false);
     } catch (err) {
-      setOtpErrorMsg(err.response?.data?.msg || "Invalid code. Please try again.");
+      setOtpErrorMsg(
+        err.response?.data?.msg || "Invalid code. Please try again.",
+      );
     } finally {
       setIsVerifyingOtp(false);
     }
@@ -300,7 +309,9 @@ const ProfileView = () => {
   // Resend OTP inside Dialog
   const handleResendOtp = async () => {
     if (isBlocked) {
-      toast.error(`You are locked out due to too many attempts. Please try again in ${hoursLeft} hours.`);
+      toast.error(
+        `You are locked out due to too many attempts. Please try again in ${hoursLeft} hours.`,
+      );
       return;
     }
     if (resendCooldown > 0) return;
@@ -417,7 +428,11 @@ const ProfileView = () => {
             <Typography variant="h6" fontWeight={700}>
               {user?.name || "Traveler"}
             </Typography>
-            <Typography variant="body2" color="text.secondary" mb={user?.isVerified ? 1 : 2}>
+            <Typography
+              variant="body2"
+              color="text.secondary"
+              mb={user?.isVerified ? 1 : 2}
+            >
               {user?.email}
             </Typography>
 
@@ -550,7 +565,8 @@ const ProfileView = () => {
                   </Box>
                 }
               >
-                You have a pending email change to <strong>{newEmailPending}</strong>.
+                You have a pending email change to{" "}
+                <strong>{newEmailPending}</strong>.
               </Alert>
             )}
 
@@ -735,17 +751,28 @@ const ProfileView = () => {
         </DialogTitle>
         <DialogContent sx={{ textAlign: "center", pb: 2 }}>
           <Typography variant="body2" color="text.secondary" mb={3}>
-            Enter the 6-digit verification code sent to <strong style={{ color: "#1976D2" }}>{newEmailPending}</strong>
+            Enter the 6-digit verification code sent to{" "}
+            <strong style={{ color: "#1976D2" }}>{newEmailPending}</strong>
           </Typography>
 
           {otpErrorMsg && (
-            <Alert severity="error" sx={{ mb: 3, borderRadius: 2, textAlign: "left" }}>
+            <Alert
+              severity="error"
+              sx={{ mb: 3, borderRadius: 2, textAlign: "left" }}
+            >
               {otpErrorMsg}
             </Alert>
           )}
 
           {/* OTP Input Grid */}
-          <Box sx={{ display: "flex", justifyContent: "space-between", gap: 1, mb: 3 }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              gap: 1,
+              mb: 3,
+            }}
+          >
             {otp.map((digit, idx) => (
               <Box
                 key={idx}
@@ -789,7 +816,11 @@ const ProfileView = () => {
           {/* Expiration Timer */}
           <Box sx={{ mb: 2 }}>
             {isTimerActive ? (
-              <Typography variant="body2" color="text.secondary" sx={{ display: "inline-flex", gap: 0.5 }}>
+              <Typography
+                variant="body2"
+                color="text.secondary"
+                sx={{ display: "inline-flex", gap: 0.5 }}
+              >
                 Code expires in{" "}
                 <strong style={{ color: "#1976D2" }}>
                   {formatTime(timeLeft)}
@@ -805,8 +836,19 @@ const ProfileView = () => {
           {/* Cooldown/Lockout Block */}
           <Box>
             {isBlocked ? (
-              <Box sx={{ p: 1.5, bgcolor: "rgba(211, 47, 47, 0.05)", borderRadius: 2 }}>
-                <Typography variant="caption" color="error" fontWeight={600} display="block">
+              <Box
+                sx={{
+                  p: 1.5,
+                  bgcolor: "rgba(211, 47, 47, 0.05)",
+                  borderRadius: 2,
+                }}
+              >
+                <Typography
+                  variant="caption"
+                  color="error"
+                  fontWeight={600}
+                  display="block"
+                >
                   ⚠️ Locked out due to too many attempts.
                 </Typography>
                 <Typography variant="caption" color="error" display="block">
@@ -858,7 +900,11 @@ const ProfileView = () => {
               variant="outlined"
               color="inherit"
               size="small"
-              sx={{ borderRadius: "8px", fontWeight: 600, textTransform: "none" }}
+              sx={{
+                borderRadius: "8px",
+                fontWeight: 600,
+                textTransform: "none",
+              }}
             >
               Cancel
             </Button>
@@ -868,9 +914,17 @@ const ProfileView = () => {
               color="primary"
               size="small"
               disabled={isVerifyingOtp || !isTimerActive}
-              sx={{ borderRadius: "8px", fontWeight: 600, textTransform: "none" }}
+              sx={{
+                borderRadius: "8px",
+                fontWeight: 600,
+                textTransform: "none",
+              }}
             >
-              {isVerifyingOtp ? <CircularProgress size={16} color="inherit" /> : "Verify & Save"}
+              {isVerifyingOtp ? (
+                <CircularProgress size={16} color="inherit" />
+              ) : (
+                "Verify & Save"
+              )}
             </Button>
           </Box>
         </DialogActions>

@@ -76,7 +76,9 @@ export const register = (userData, navigate) => async (dispatch) => {
 
     // Note: We do not dispatch REGISTER_SUCCESS or loadUser here since the user
     // is unverified and cannot be logged in yet.
-    toast.success("Account created! A verification code was sent to your email. 🚀");
+    toast.success(
+      "Account created! A verification code was sent to your email. 🚀",
+    );
     navigate("/verify-otp", { state: { email: userData.email } });
   } catch (error) {
     const msg = error.response?.data?.msg || "Registration failed";
