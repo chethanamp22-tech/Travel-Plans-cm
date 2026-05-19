@@ -17,7 +17,6 @@ import {
   Stepper,
   Step,
   StepLabel,
-  Grid,
   FormControlLabel,
   Checkbox,
 } from "@mui/material";
@@ -181,37 +180,33 @@ const Register = () => {
             <Typography variant="h6" sx={{ mb: 3 }}>
               Let's get to know you
             </Typography>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  autoComplete="given-name"
-                  name="firstName"
-                  required
-                  fullWidth
-                  id="firstName"
-                  label="First Name"
-                  autoFocus
-                  value={formData.firstName}
-                  onChange={handleChange}
-                  error={!!fieldErrors.firstName}
-                  helperText={fieldErrors.firstName}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="lastName"
-                  label="Last Name"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  error={!!fieldErrors.lastName}
-                  helperText={fieldErrors.lastName}
-                />
-              </Grid>
-            </Grid>
+            <Box sx={{ display: "flex", flexDirection: "row", gap: 2 }}>
+              <TextField
+                autoComplete="given-name"
+                name="firstName"
+                required
+                fullWidth
+                id="firstName"
+                label="First Name"
+                autoFocus
+                value={formData.firstName}
+                onChange={handleChange}
+                error={!!fieldErrors.firstName}
+                helperText={fieldErrors.firstName}
+              />
+              <TextField
+                required
+                fullWidth
+                id="lastName"
+                label="Last Name"
+                name="lastName"
+                autoComplete="family-name"
+                value={formData.lastName}
+                onChange={handleChange}
+                error={!!fieldErrors.lastName}
+                helperText={fieldErrors.lastName}
+              />
+            </Box>
           </>
         );
       case 1:
