@@ -326,7 +326,7 @@ const Register = () => {
                   checked={formData.agreeTerms}
                   onChange={handleChange}
                   name="agreeTerms"
-                  color="primary" 
+                  color="primary"
                   sx={{
                     paddingTop: 0,
                     marginTop: "-2px",
@@ -352,7 +352,8 @@ const Register = () => {
                     sx={{ fontWeight: 600 }}
                   >
                     Privacy Policy
-                  </Link>{" "}*
+                  </Link>{" "}
+                  *
                 </Typography>
               }
             />
