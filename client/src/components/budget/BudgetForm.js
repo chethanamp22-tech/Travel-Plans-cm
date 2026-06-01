@@ -75,6 +75,7 @@ const BudgetForm = ({
             value={form.days}
             onChange={handleChange}
             InputLabelProps={{ shrink: true }}
+            inputProps={{ min: 1 }}
             sx={inputStyle}
           />
         </Grid>
@@ -88,6 +89,7 @@ const BudgetForm = ({
             value={form.travelers}
             onChange={handleChange}
             InputLabelProps={{ shrink: true }}
+            inputProps={{ min: 1 }}
             sx={inputStyle}
           />
         </Grid>

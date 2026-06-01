@@ -31,6 +31,10 @@ const BudgetEstimatorPage = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
+    if ((name === "days" || name === "travelers") && Number(value) < 1) {
+      return;
+    }
+
     setForm({
       ...form,
       [name]: name === "days" || name === "travelers" ? Number(value) : value,
