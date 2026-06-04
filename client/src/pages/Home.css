@@ -121,7 +121,8 @@ html {
   display: grid;
   grid-template-columns: 1fr 1fr;
   align-items: center;
-  padding: 4rem 3rem 4rem 4rem;
+  /* Increased top padding so hero clears the fixed navbar */
+  padding: 8rem 3rem 4rem 4rem;
   gap: 3rem;
   position: relative;
   overflow: hidden;
@@ -899,7 +900,8 @@ html {
 @media (max-width: 900px) {
   .wander-hero {
     grid-template-columns: 1fr;
-    padding: 3rem 1.5rem;
+    /* Mobile: increase top padding to clear mobile navbar */
+    padding: 7rem 1.5rem 3rem 1.5rem;
     min-height: auto;
   }
 
