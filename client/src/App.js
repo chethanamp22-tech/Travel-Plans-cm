@@ -47,8 +47,7 @@ function App() {
               />
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
-              <Route path="/about" element={<About />} />{" "}
-              {/* <-- ADD THIS ROUTE */}
+              <Route path="/about" element={<About />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               {/* ✅ Contact Route Added */}
@@ -57,13 +56,10 @@ function App() {
               <Route path="/trip/share/:token" element={<SharedTripView />} />
               <Route path="/shared-trip/:token" element={<SharedTripView />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route
                 path="/reset-password/:token"
                 element={<ResetPassword />}
               />
-              {/* Fallback */}
-              <Route path="*" element={<NotFound />} />
               {/* Fallback */}
               <Route path="*" element={<NotFound />} />
             </Routes>
