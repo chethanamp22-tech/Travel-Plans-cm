@@ -432,7 +432,8 @@ const Register = () => {
                 bottom: 0,
                 left: 0,
                 backgroundColor: "rgba(0, 0, 0, 0.3)",
-                background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%)",
+                background:
+                  "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%)",
                 zIndex: 2,
               }}
             />
@@ -443,29 +444,50 @@ const Register = () => {
             <Typography
               variant="h3"
               component="h1"
-              sx={{ fontWeight: 800, mb: 2, textShadow: "0 2px 10px rgba(0,0,0,0.3)" }}
+              sx={{
+                fontWeight: 800,
+                mb: 2,
+                textShadow: "0 2px 10px rgba(0,0,0,0.3)",
+              }}
             >
               Join PackGo
             </Typography>
-            <Typography variant="h5" sx={{ mb: 4, maxWidth: "80%", fontWeight: 400, textShadow: "0 2px 4px rgba(0,0,0,0.3)" }}>
-              Create an account to start planning your next breathtaking adventure.
+            <Typography
+              variant="h5"
+              sx={{
+                mb: 4,
+                maxWidth: "80%",
+                fontWeight: 400,
+                textShadow: "0 2px 4px rgba(0,0,0,0.3)",
+              }}
+            >
+              Create an account to start planning your next breathtaking
+              adventure.
             </Typography>
-            
+
             {/* Modern Pagination UI */}
-            <Box sx={{ display: "flex", gap: 1.5, mb: 2, alignItems: "center" }}>
+            <Box
+              sx={{ display: "flex", gap: 1.5, mb: 2, alignItems: "center" }}
+            >
               {carouselImages.map((_, index) => (
                 <Box
                   key={index}
                   sx={{
                     width: currentImageIndex === index ? 32 : 10,
                     height: 10,
-                    bgcolor: currentImageIndex === index ? "white" : "rgba(255, 255, 255, 0.4)",
+                    bgcolor:
+                      currentImageIndex === index
+                        ? "white"
+                        : "rgba(255, 255, 255, 0.4)",
                     borderRadius: 5,
                     transition: "all 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
                     cursor: "pointer",
                     "&:hover": {
-                      bgcolor: currentImageIndex === index ? "white" : "rgba(255, 255, 255, 0.7)",
-                    }
+                      bgcolor:
+                        currentImageIndex === index
+                          ? "white"
+                          : "rgba(255, 255, 255, 0.7)",
+                    },
                   }}
                   onClick={() => setCurrentImageIndex(index)}
                 />
