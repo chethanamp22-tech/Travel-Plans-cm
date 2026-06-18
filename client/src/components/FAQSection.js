@@ -6,6 +6,7 @@ import {
   Typography,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ShowMoreList from "./ShowMoreList";
 
 const faqs = [
   {
@@ -78,56 +79,61 @@ const FAQSection = () => {
 
       {/* FAQ Items */}
       <div>
-        {faqs.map((faq, index) => (
-          <Accordion
-            key={index}
-            disableGutters
-            elevation={0}
-            style={{
-              marginBottom: "14px",
-              borderRadius: "14px",
-              border: "1px solid #e2e8f0",
-              overflow: "hidden",
-              boxShadow: "0 2px 10px rgba(0,0,0,0.04)",
-              transition: "all 0.2s ease-in-out",
-            }}
-          >
-            <AccordionSummary
-              expandIcon={<ExpandMoreIcon style={{ color: "#0f172a" }} />}
+        <ShowMoreList
+          items={faqs}
+          initialCount={3}
+          itemLabel="FAQs"
+          renderItem={(faq, index) => (
+            <Accordion
+              key={index}
+              disableGutters
+              elevation={0}
               style={{
-                backgroundColor: "#f8fafc",
-                padding: "0.9rem 1.1rem",
+                marginBottom: "14px",
+                borderRadius: "14px",
+                border: "1px solid #e2e8f0",
+                overflow: "hidden",
+                boxShadow: "0 2px 10px rgba(0,0,0,0.04)",
+                transition: "all 0.2s ease-in-out",
               }}
             >
-              <Typography
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon style={{ color: "#0f172a" }} />}
                 style={{
-                  fontWeight: 600,
-                  color: "#0f172a",
-                  fontSize: "1rem",
+                  backgroundColor: "#f8fafc",
+                  padding: "0.9rem 1.1rem",
                 }}
               >
-                {faq.question}
-              </Typography>
-            </AccordionSummary>
+                <Typography
+                  style={{
+                    fontWeight: 600,
+                    color: "#0f172a",
+                    fontSize: "1rem",
+                  }}
+                >
+                  {faq.question}
+                </Typography>
+              </AccordionSummary>
 
-            <AccordionDetails
-              style={{
-                backgroundColor: "#ffffff",
-                padding: "1rem 1.2rem",
-              }}
-            >
-              <Typography
+              <AccordionDetails
                 style={{
-                  color: "#475569",
-                  lineHeight: "1.7",
-                  fontSize: "0.95rem",
+                  backgroundColor: "#ffffff",
+                  padding: "1rem 1.2rem",
                 }}
               >
-                {faq.answer}
-              </Typography>
-            </AccordionDetails>
-          </Accordion>
-        ))}
+                <Typography
+                  style={{
+                    color: "#475569",
+                    lineHeight: "1.7",
+                    fontSize: "0.95rem",
+                  }}
+                >
+                  {faq.answer}
+                </Typography>
+              </AccordionDetails>
+            </Accordion>
+          )}
+        />
       </div>
     </section>
   );
